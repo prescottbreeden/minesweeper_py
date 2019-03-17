@@ -29,24 +29,16 @@ class Game:
 
 
     def add_warnings(self, pos):
-        # increment sides
-        if pos.y > 0: self.inc_warn_top(pos)
-        if pos.x > 0: self.inc_warn_left(pos)
-        if pos.y < self.size-1: self.inc_warn_bottom(pos)
-        if pos.x < self.size-1: self.inc_warn_right(pos)
 
+        self.inc_warn_top(pos)
+        self.inc_warn_bottom(pos)
+        self.inc_warn_right(pos)
+        self.inc_warn_left(pos)
         # increment diagonals
-        if pos.x > 0 and pos.y > 0: 
-            self.inc_warn_top_left(pos)
-            
-        if pos.x < self.size-1 and pos.y > 0: 
-            self.inc_warn_top_right(pos)
-            
-        if pos.x < self.size-1 and pos.y < self.size-1: 
-            self.inc_warn_bottom_right(pos)
-
-        if pos.x > 0 and pos.y < self.size-1: 
-            self.inc_warn_bottom_left(pos)
+        self.inc_warn_top_left(pos)
+        self.inc_warn_bottom_left(pos)
+        self.inc_warn_top_right(pos)
+        self.inc_warn_bottom_right(pos)
 
 
     def add_bomb(self):
@@ -73,54 +65,58 @@ class Game:
     # top left:     y-1 x-1
 
     def inc_warn_top_left(self, pos):
-        pos.y -= 1
-        pos.x -= 1
-        sq = self.find_square(pos)
-        sq.warning += 1
+        if pos.x > 0 and pos.y > 0: 
+            loc = Position(pos.x-1, pos.y-1)
+            sq = self.find_square(loc)
+            sq.warning += 1
 
 
     def inc_warn_bottom_left(self, pos):
-        pos.y += 1
-        pos.x -= 1
-        sq = self.find_square(pos)
-        sq.warning += 1
+        if pos.x > 0 and pos.y < self.size-1: 
+            loc = Position(pos.x-1, pos.y+1)
+            sq = self.find_square(loc)
+            sq.warning += 1
 
 
     def inc_warn_top_right(self, pos):
-        pos.y -= 1
-        pos.x += 1
-        sq = self.find_square(pos)
-        sq.warning += 1
+        if pos.x < self.size-1 and pos.y > 0: 
+            loc = Position(pos.x+1, pos.y-1)
+            sq = self.find_square(loc)
+            sq.warning += 1
 
 
     def inc_warn_bottom_right(self, pos):
-        pos.y += 1
-        pos.x += 1
-        sq = self.find_square(pos)
-        sq.warning += 1
+        if pos.x < self.size-1 and pos.y < self.size-1: 
+            loc = Position(pos.x+1, pos.y+1)
+            sq = self.find_square(loc)
+            sq.warning += 1
 
 
     def inc_warn_top(self, pos):
-        pos.y -= 1
-        sq = self.find_square(pos)
+        if pos.y == 0: return
+        loc = Position(pos.x, pos.y-1)
+        sq = self.find_square(loc)
         sq.warning += 1
-
+        
 
     def inc_warn_bottom(self, pos):
-        pos.y += 1
-        sq = self.find_square(pos)
+        if pos.y == self.size-1: return
+        loc = Position(pos.x, pos.y+1)
+        sq = self.find_square(loc)
         sq.warning += 1
 
 
     def inc_warn_right(self, pos):
-        pos.x += 1
-        sq = self.find_square(pos)
+        if pos.x == self.size-1: return
+        loc = Position(pos.x+1, pos.y)
+        sq = self.find_square(loc)
         sq.warning += 1
     
     
     def inc_warn_left(self, pos):
-        pos.x -= 1
-        sq = self.find_square(pos)
+        if pos.x == 0: return
+        loc = Position(pos.x-1, pos.y)
+        sq = self.find_square(loc)
         sq.warning += 1
 
 
