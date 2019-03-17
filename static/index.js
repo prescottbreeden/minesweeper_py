@@ -69,7 +69,27 @@ function drawSquare(x, y) {
     const loc = state.board[x][y];
     if (loc.bomb === true) {
       square.innerText = 'B';
-    } else {
+    } else if (loc.warning > 0) {
+      switch (loc.warning) {
+        case 1:
+          square.classList.add('blue-text');
+          break;
+        case 2:
+          square.classList.add('green-text');
+          break;
+        case 3:
+          square.classList.add('red-text');
+          break;
+        case 4:
+          square.classList.add('purple-text');
+          break;
+        case 5:
+          square.classList.add('brown-text');
+          break;
+        case 6:
+          square.classList.add('cyan-text');
+          break;
+      }
       square.innerText = loc.warning;
     }
     return square;

@@ -29,11 +29,12 @@ class Game:
 
 
     def add_warnings(self, pos):
-
+        # increment sides
         self.inc_warn_top(pos)
         self.inc_warn_bottom(pos)
         self.inc_warn_right(pos)
         self.inc_warn_left(pos)
+
         # increment diagonals
         self.inc_warn_top_left(pos)
         self.inc_warn_bottom_left(pos)
@@ -53,16 +54,6 @@ class Game:
         else:
             return self.add_bomb() 
 
-
-    # relational coordinate map:
-    # top:          y-1 x
-    # top right:    y-1 x+1 
-    # right:        y   x+1
-    # bottom right: y+1 x+1
-    # bottom:       y+1 x
-    # bottom left:  y+1 x-1
-    # left:         y   x-1
-    # top left:     y-1 x-1
 
     def inc_warn_top_left(self, pos):
         if pos.x > 0 and pos.y > 0: 

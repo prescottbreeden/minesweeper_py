@@ -19,11 +19,35 @@ body {
 .bomb {
   width: 3rem;
   height: 3rem;
-  background-color: red;
+  background-color: orangered;
   border: 1px solid darkgray;
   text-align: center;
 }
 
 .square:hover {
   cursor: pointer;
+}
+
+.blue-text {
+  color: blue;
+}
+
+.green-text {
+  color: green;
+}
+
+.red-text {
+  color: red;
+}
+
+.purple-text {
+  color: purple;
+}
+
+.brown-text {
+  color: brown;
+}
+
+.cyan-text {
+  color: cyan;
 }
