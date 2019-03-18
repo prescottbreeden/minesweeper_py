@@ -25,7 +25,6 @@ class Game:
         while len(bombs) < self.total_bombs:
             sq = self.add_bomb()
             bombs.append(sq)
-        print(bombs)
 
 
     def add_warnings(self, pos):
