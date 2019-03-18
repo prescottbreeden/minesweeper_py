@@ -1,7 +1,6 @@
 var state = {}
 
 $(document).ready(function() {
-  console.log('wewt');
   landing();
 })
 
@@ -9,26 +8,20 @@ $(document).on('click', '.square', function(e) {
   const target = e.target;
   const id = target.id;
   revealSquare(target, id);
-
 })
-
-function revealSquare(target, id) {
-  const coord = id.split(' ');
-  const x = coord[0];
-  const y = coord[1];
-  if (state.board[x][y].bomb === true) {
-    console.log('BOOOOOOM');
-    target.className = 'bomb';
-  }
-}
 
 function landing() {
   const root = document.getElementById('root');
+  const button = makeButton('Create New Game');
+  root.appendChild(button);
+}
+
+function makeButton(text) {
   const button = document.createElement('button');
-  button.innerText = 'Create New Game';
+  button.innerText = text;
   button.id = 'start';
   button.addEventListener('click', generateNewGame);
-  root.appendChild(button);
+  return button; 
 }
 
 function generateNewGame() {
@@ -43,6 +36,9 @@ function generateNewGame() {
 
 function drawBoard() {
   const root = document.getElementById('root');
+  root.innerHTML = '';
+  const button = makeButton('Reset');
+  root.appendChild(button);
   const board = document.createElement('div');
   board.className = 'board';
   root.appendChild(board);
@@ -64,33 +60,65 @@ function drawRow(y) {
 
 function drawSquare(x, y) {
     const square = document.createElement('div');
-    square.className = 'square'
-    square.id = `${x} ${y}`
-    const loc = state.board[x][y];
-    if (loc.bomb === true) {
-      square.innerText = 'B';
-    } else if (loc.warning > 0) {
-      switch (loc.warning) {
-        case 1:
-          square.classList.add('blue-text');
-          break;
-        case 2:
-          square.classList.add('green-text');
-          break;
-        case 3:
-          square.classList.add('red-text');
-          break;
-        case 4:
-          square.classList.add('purple-text');
-          break;
-        case 5:
-          square.classList.add('brown-text');
-          break;
-        case 6:
-          square.classList.add('cyan-text');
-          break;
-      }
-      square.innerText = loc.warning;
-    }
+    square.className = 'square';
+    square.id = `${x} ${y}`;
     return square;
+}
+
+function revealSquare(target, id) {
+  target.classList.remove('square');
+  target.classList.add('reveal');
+  const loc = getLocation(id);
+  if (loc.bomb === true) {
+    console.log('boooooom');
+    target.classList.add('bomb');
+    target.classList.add('explode');
+  } 
+  else if (loc.warning === 0) {
+    floodFill(target, id);
+  }
+  else if (loc.warning > 0) {
+    addWarning(target, loc.warning);
+  }
+}
+
+function addWarning(target, num) {
+    switch (num) {
+      case 1:
+        target.classList.add('blue-text');
+        break;
+      case 2:
+        target.classList.add('green-text');
+        break;
+      case 3:
+        target.classList.add('red-text');
+        break;
+      case 4:
+        target.classList.add('purple-text');
+        break;
+      case 5:
+        target.classList.add('brown-text');
+        break;
+      case 6:
+        target.classList.add('cyan-text');
+        break;
+    }
+    target.innerText = num;
+}
+
+function floodFill(ele, id) {
+  if (!ele) return;
+  ele.classList.remove('square');
+  ele.classList.add('reveal');
+  const loc = getLocation(id);
+  if (loc.warning !== 0) {
+    addWarning(ele, id);
+  }
+}
+
+function getLocation(id) {
+  const coord = id.split(' ');
+  const x = coord[0];
+  const y = coord[1];
+  return state.board[x][y];
 }
